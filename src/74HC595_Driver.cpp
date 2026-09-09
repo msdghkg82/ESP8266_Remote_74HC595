@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-namespace HC595Driver
+namespace HC595_Driver
 {
     void HC595_Write(uint8_t data)
     {

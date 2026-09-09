@@ -1,10 +1,10 @@
-#include "Remote_Driver.h"
+#include "RF_Remote_Driver.h"
 
 #include "Config.h"
 #include <Arduino.h>
 #include <RCSwitch.h>
 
-namespace RemoteDriver
+namespace RF_Remote_Driver
 {
     RCSwitch mySwitch = RCSwitch();
 

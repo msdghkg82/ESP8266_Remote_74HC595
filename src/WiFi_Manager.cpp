@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 
-namespace WiFiManager
+namespace WiFi_Manager
 {
     void init()
     {

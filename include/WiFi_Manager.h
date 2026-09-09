@@ -1,7 +1,7 @@
 #ifndef WIFI_MANAGER_H
 #define WIFI_MANAGER_H
 
-namespace WiFiManager
+namespace WiFi_Manager
 {
     void init();
     void TurnOn();

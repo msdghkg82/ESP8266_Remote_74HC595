@@ -5,7 +5,7 @@
 #include <ESP8266HTTPUpdateServer.h>
 //#include <ArduinoJson.h>
 
-namespace WebserverManager
+namespace Webserver_Manager
 {
     static ESP8266WebServer server(80);
     static ESP8266HTTPUpdateServer httpUpdater;
