@@ -16,5 +16,10 @@
 #define OTA_PASSWORD "admin"
 
 // WiFi Configuration
-#define AP_SSID "ESP"
-#define AP_PASSWORD ""
+// Access Point (AP) Configuration
+#define AP_SSID_DEFAULT "ESP"
+#define AP_PASSWORD_DEFAULT ""
+
+// Station (STA) Configuration
+//extern const char[] STA_SSID = "";
+//extern const char[] STA_PASSWORD = "";
