@@ -1,5 +1,5 @@
-#ifndef WEBSERVERMANAGER_H
-#define WEBSERVERMANAGER_H
+#ifndef WEBSERVER_MANAGER_H
+#define WEBSERVER_MANAGER_H
 
 namespace WebserverManager
 {

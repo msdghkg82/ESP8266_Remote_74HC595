@@ -21,5 +21,5 @@
 #define AP_PASSWORD_DEFAULT ""
 
 // Station (STA) Configuration
-//extern const char[] STA_SSID = "";
-//extern const char[] STA_PASSWORD = "";
+#define STA_SSID = ""
+#define STA_PASSWORD = ""
