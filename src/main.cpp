@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "WebserverManager.h"
-#include "WiFiManager.h"
+#include "Webserver_Manager.h"
+#include "WiFi_Manager.h"
 #include "Remote_Driver.h"
 #include "74HC595_Driver.h"
 
