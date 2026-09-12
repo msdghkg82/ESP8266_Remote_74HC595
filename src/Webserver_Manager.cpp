@@ -4,13 +4,14 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
 #include <ArduinoJson.h>
+#include "API_Manager.h"
 
 namespace Webserver_Manager
 {
     static ESP8266WebServer server(80);
     static ESP8266HTTPUpdateServer httpUpdater;
 
-    static void SendJsonResponse(int code, const String& stat, const String& msg)
+    void SendJsonResponse(int code, const String& stat, const String& msg)
     {
         JsonDocument doc;
         doc["status"] = stat;
@@ -19,15 +20,12 @@ namespace Webserver_Manager
         serializeJson(doc, response);
         server.send(code, "application/json", response);
     }
-    
-    static void handleRoot()
-    {
-        SendJsonResponse(200, "OK", "Hello from ESP8266 Webserver.");
-    }
 
     static void ConnectAPIs()
     {
-        server.on("/", handleRoot);
+        server.on("/", []() {
+            SendJsonResponse(200, "OK", "Hello from ESP8266 Webserver.");
+        });
         server.onNotFound([]() {
             SendJsonResponse(404, "ERROR", "404: Not Found");
         });
