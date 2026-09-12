@@ -21,5 +21,9 @@
 #define AP_PASSWORD_DEFAULT ""
 
 // Station (STA) Configuration
-#define STA_SSID = ""
-#define STA_PASSWORD = ""
+#define STA_SSID ""
+#define STA_PASSWORD ""
+//==== End of Other Configuration ====
+
+//==== Storage Paths ====
+#define WIFI_FILE "/wifi.config"

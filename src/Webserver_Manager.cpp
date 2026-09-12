@@ -21,6 +21,11 @@ namespace Webserver_Manager
         server.send(code, "application/json", response);
     }
 
+    String GetServerArg()
+    {
+        return server.arg("plain");
+    }
+
     static void ConnectAPIs()
     {
         server.on("/", []() {
