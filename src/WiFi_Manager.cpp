@@ -12,12 +12,12 @@ namespace WiFi_Manager
         WiFi.softAP(AP_SSID, AP_PASSWORD);
     }
 
-    void TurnOn()
+    void Connect()
     {
         WiFi.softAP(AP_SSID, AP_PASSWORD);
     }
 
-    void TurnOff()
+    void Disconnect()
     {
         WiFi.softAPdisconnect();
     }

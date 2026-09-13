@@ -1,7 +1,8 @@
 #ifndef FILESYSTEM_MANAGER_H
 #define FILESYSTEM_MANAGER_H
 
-//class JsonDocument;
+#pragma once
+#include <ArduinoJson.h>
 
 namespace Filesystem_Manager
 {

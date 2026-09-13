@@ -4,8 +4,8 @@
 namespace WiFi_Manager
 {
     void init();
-    void TurnOn();
-    void TurnOff();
+    void Connect();
+    void Disconnect();
 }
 
 #endif // WIFI_MANAGER_H

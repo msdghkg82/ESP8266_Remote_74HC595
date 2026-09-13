@@ -2,7 +2,7 @@
 
 #include "Config.h"
 #include <LittleFS.h>
-#include <ArduinoJson.h>
+//#include <ArduinoJson.h>
 
 namespace Filesystem_Manager
 {
@@ -58,12 +58,14 @@ namespace Filesystem_Manager
         JsonDocument doc;
 
         // Load WiFi Config
-        LoadJson(WIFI_FILE, doc);
-        AP_SSID = doc["AP_SSID"];
-        AP_PASSWORD = doc["AP_PASSWORD"];
+        if(LoadJson(WIFI_FILE, doc))
+        AP_SSID = doc["AP_SSID"].as<String>();
+        AP_PASSWORD = doc["AP_PASSWORD"].as<String>();
         doc.clear();
 
         // Load ...
+
+        return true;
     }
 
     void init()
