@@ -9,12 +9,12 @@ namespace WiFi_Manager
     void init()
     {
         WiFi.mode(WIFI_AP);
-        WiFi.softAP(AP_SSID_DEFAULT, AP_PASSWORD_DEFAULT);
+        WiFi.softAP(AP_SSID, AP_PASSWORD);
     }
 
     void TurnOn()
     {
-        WiFi.softAP(AP_SSID_DEFAULT, AP_PASSWORD_DEFAULT);
+        WiFi.softAP(AP_SSID, AP_PASSWORD);
     }
 
     void TurnOff()

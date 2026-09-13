@@ -6,7 +6,7 @@
 
 namespace RF_Remote_Driver
 {
-    RCSwitch mySwitch = RCSwitch();
+    static RCSwitch mySwitch = RCSwitch();
 
     void init()
     {
