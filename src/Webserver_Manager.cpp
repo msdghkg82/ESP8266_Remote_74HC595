@@ -34,6 +34,7 @@ namespace Webserver_Manager
         server.onNotFound([]() {
             SendJsonResponse(404, "ERROR", "404: Not Found");
         });
+        server.on("/api/wifi", HTTP_PUT, API_Manager::handle_WiFiSetting);
     }
 
     void init()

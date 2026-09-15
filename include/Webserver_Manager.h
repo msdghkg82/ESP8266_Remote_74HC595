@@ -1,7 +1,9 @@
 #ifndef WEBSERVER_MANAGER_H
 #define WEBSERVER_MANAGER_H
 
-class String;
+#pragma once
+
+#include <WString.h>
 
 namespace Webserver_Manager
 {

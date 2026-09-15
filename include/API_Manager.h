@@ -3,7 +3,7 @@
 
 namespace API_Manager
 {
-    void handle();
+    void handle_WiFiSetting();
 }
 
 #endif // API_MANAGER_H
