@@ -4,6 +4,7 @@
 #include "RF_Remote_Driver.h"
 #include "74HC595_Driver.h"
 #include "Filesystem_Manager.h"
+#include "StatusLED_Manager.h"
 
 // put function declarations here:
 
@@ -17,6 +18,7 @@ void setup() {
   Webserver_Manager::init();
   RF_Remote_Driver::init();
   HC595_Driver::init();
+  StatusLED_Manager::init();
 }
 
 void loop() {

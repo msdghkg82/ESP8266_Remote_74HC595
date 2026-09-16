@@ -14,6 +14,12 @@
 
 
 
+//==== API Paths & Methods ====
+#define WIFI_API     "/api/wifi", HTTP_PUT
+//==== End of API Paths & Methods ====
+
+
+
 //==== Other Configurations ====
 // OTA Update Configuration
 #define OTA_USERNAME "admin"
