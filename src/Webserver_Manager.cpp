@@ -46,7 +46,7 @@ namespace Webserver_Manager
         Serial.println("HTTP server started");
     }
 
-    void handleClient()
+    void loop()
     {
         server.handleClient();
     }

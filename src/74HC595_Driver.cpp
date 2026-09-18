@@ -16,9 +16,10 @@ namespace HC595_Driver
     void init()
     {
         pinMode(LATCH_PIN, OUTPUT);
-        pinMode(CLOCK_PIN, OUTPUT);
-        pinMode(DATA_PIN, OUTPUT);
-
+        digitalWrite(LATCH_PIN, LOW);
+        
+        SPI.setBitOrder(MSBFIRST);
+        SPI.setDataMode(SPI_MODE0);
         SPI.begin();
 
         HC595_Write(0x00);

@@ -17,19 +17,21 @@ namespace StatusLED_Manager
     static void ResetTicker_CallBack()
     {
         LEDTicker.detach();
-        LEDTicker.attach(1.f, LEDTicker_CallBack);
+        LEDTicker.attach_ms(DEFAULT_INTERVAL, LEDTicker_CallBack);
     }
 
-    void SetStatusLEDInterval(float interval)
+    void SetInterval(uint32_t interval)
     {
         LEDTicker.detach();
-        LEDTicker.attach(interval, LEDTicker_CallBack);
+        ResetTicker.detach();
+        LEDTicker.attach_ms(interval, LEDTicker_CallBack);
     }
 
-    void SetStatusLEDInterval(float interval, float seconds)
+    void SetInterval(uint32_t interval, uint32_t seconds)
     {
         LEDTicker.detach();
-        LEDTicker.attach(interval, LEDTicker_CallBack);
+        LEDTicker.attach_ms(interval, LEDTicker_CallBack);
+        ResetTicker.detach();
         ResetTicker.once(seconds, ResetTicker_CallBack);
     }
 
@@ -37,6 +39,6 @@ namespace StatusLED_Manager
     {
         pinMode(LED_BUILTIN, OUTPUT);
         digitalWrite(LED_BUILTIN, HIGH);
-        LEDTicker.attach(1.f, LEDTicker_CallBack);
+        LEDTicker.attach_ms(DEFAULT_INTERVAL, LEDTicker_CallBack);
     }
 }

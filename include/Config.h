@@ -7,9 +7,7 @@
 #define RECEIVER_PIN 2
 
 // 74HC595 Pin Definitions
-#define DATA_PIN 12
-#define CLOCK_PIN 13
-#define LATCH_PIN 14
+#define LATCH_PIN 4
 //==== End of Pin Definitions ====
 
 
@@ -20,20 +18,19 @@
 
 
 
-//==== Other Configurations ====
+//==== WebServer Configurations ====
 // OTA Update Configuration
 #define OTA_USERNAME "admin"
 #define OTA_PASSWORD "admin"
 
 // WiFi Configuration
-// Access Point (AP) Configuration
+// Access Point (AP)
 inline String AP_SSID = "ESP";
 inline String AP_PASSWORD = "";
-
-// Station (STA) Configuration
-#define STA_SSID ""
-#define STA_PASSWORD ""
-//==== End of Other Configuration ====
+// Station (STA)
+//inline String STA_SSID = "";
+//inline String STA_PASSWORD = "";
+//==== End of WebServer Configuration ====
 
 
 
@@ -41,3 +38,10 @@ inline String AP_PASSWORD = "";
 // WiFi Config Path
 #define WIFI_FILE "/wifi.json"
 //==== End of Storage Paths ====
+
+
+
+//==== Other Configurations ====
+// StatusLED Default Blinking Interval
+#define DEFAULT_INTERVAL 1000
+//==== End of Other Configuration ====

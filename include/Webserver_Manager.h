@@ -8,7 +8,7 @@
 namespace Webserver_Manager
 {
     void init();
-    void handleClient();
+    void loop();
     void SendJsonResponse(int code, const String& stat, const String& msg);
     String GetServerArg();
 }
