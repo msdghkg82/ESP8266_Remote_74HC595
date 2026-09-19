@@ -17,7 +17,7 @@ void setup() {
   WiFi_Manager::init();
   Webserver_Manager::init();
   RF_Remote_Driver::init();
-  HC595_Driver::init();
+  hc595.init();
   StatusLED_Manager::init();
 }
 

@@ -13,7 +13,8 @@
 
 
 //==== API Paths & Methods ====
-#define WIFI_API     "/api/wifi", HTTP_PUT
+#define WIFI_SETTING_API    "/api/wifi", HTTP_PUT
+#define HC595_SETMODE_API    "/api/setmode", HTTP_PUT
 //==== End of API Paths & Methods ====
 
 
@@ -37,6 +38,10 @@ inline String AP_PASSWORD = "";
 //==== Storage Paths ====
 // WiFi Config Path
 #define WIFI_FILE "/wifi.json"
+
+// 74HC595 Config Path
+#define HC595_MODE_FILE "/hc595_mode.json"
+#define HC595_INTERVAL_FILE "/hc595_interval.json"
 //==== End of Storage Paths ====
 
 
