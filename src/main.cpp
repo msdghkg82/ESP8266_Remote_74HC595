@@ -13,20 +13,21 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
-  //hc595.init();
+  hc595.init();
   Filesystem_Manager::init();
   WiFi_Manager::init();
   Webserver_Manager::init();
   RF_Remote_Driver::init();
   StatusLED_Manager::init();
-  hc595.init();
+  //hc595.init();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  hc595.loop();
   Webserver_Manager::loop();
   RF_Remote_Driver::loop();
-  hc595.loop();
+  //hc595.loop();
 }
 
 // put function definitions here:

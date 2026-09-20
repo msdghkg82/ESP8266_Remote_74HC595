@@ -82,24 +82,42 @@ namespace API_Manager
         if(doc["Mode"].is<String>())
         {
             String mode = doc["Mode"].as<String>();
-            if(HasAnimation(StringtoMode(mode)))
+            if(!HasAnimation(StringtoMode(mode)))
             {
-                if(doc["Interval"].is<uint32_t>())
+                // if Mode hasnt Animation (ON or OFF)
+                hc595.SetMode(StringtoMode(mode));
+                Serial.println("Mode Set to: " + mode);
+                if(!Filesystem_Manager::Update(HC595_FILE, "Mode", ModeToString(hc595.GetMode())))
+                {
+                    Serial.println("New Mode Did Not Saved");
+                }
+                updatedMode = true;
+            }
+            else
+            {
+                // if Mode has Animation
+                if(!doc["Interval"].is<uint32_t>())
                 {
                     Webserver_Manager::SendJsonResponse(400, "ERROR", "Interval is Required for this Mode");
                     return;
                 }
+                hc595.SetMode(StringtoMode(mode));
+                Serial.println("Mode Set to: " + mode);
+                hc595.SetInterval(doc["Interval"].as<uint32_t>());
+                Serial.println("Interval Set to: " + doc["Interval"].as<String>());
+                doc.clear();
+                doc["Mode"] = ModeToString(hc595.GetMode());
+                doc["Interval"] = hc595.GetInterval();
+                if(!Filesystem_Manager::Update(HC595_FILE, doc))
+                {
+                    Serial.println("New Mode & Interval Did Not Saved");
+                }
+                updatedMode = true;
+                updatedInterval = true;
             }
-            hc595.SetMode(StringtoMode(mode));
-            Serial.println("Mode Set to: " + mode);
-            if(!Filesystem_Manager::Update(HC595_FILE, "Mode", ModeToString(hc595.GetMode())))
-            {
-                Serial.println("New Mode Did Not Saved");
-            }
-            updatedMode = true;
         }
 
-        if(doc["Interval"].is<uint32_t>())
+        if(doc["Interval"].is<uint32_t>() && updatedInterval == false)
         {
             hc595.SetInterval(doc["Interval"].as<uint32_t>());
             Serial.println("Interval Set to: " + doc["Interval"].as<String>());
@@ -140,8 +158,14 @@ namespace API_Manager
             return;
         }
 
-        hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
-        Serial.println("Brightness Set to: " + doc["Brightness"].as<String>());
+        int brightness = doc["Brightness"].as<uint8_t>();
+        if(!(brightness >= 0 && brightness <= 255))
+        {
+            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid Brightness Value");
+            return;
+        }
+        hc595.SetBrightness((uint8_t)brightness);
+        Serial.println("Brightness Set to: " + String(brightness));
         if(!Filesystem_Manager::Update(HC595_FILE, "Brightness", hc595.GetBrightness()))
         {
             Serial.println("New Brightness Did Not Saved");

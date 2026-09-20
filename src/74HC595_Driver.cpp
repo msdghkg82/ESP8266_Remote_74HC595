@@ -18,7 +18,11 @@ HC595::HC595()
 {
     _mode = Mode::OFF;
     _previousMillis = 0;
+    _currentMillis = 0;
     _interval = 0;
+    _buffer = 0;
+    _index = 0;
+    _brightness = 255;
 }
 
 void HC595::Write(uint8_t data)
@@ -80,6 +84,10 @@ void HC595::Cascade()
 void HC595::SetMode(Mode mode)
 {
     _mode = mode;
+    _index = 0;
+    _buffer = 0;
+    _previousMillis = millis();
+
     if(_mode == Mode::OFF) Off();
     else if(_mode == Mode::ON) On();
 }
@@ -91,7 +99,10 @@ Mode HC595::GetMode()
 
 void HC595::SetInterval(uint32_t interval)
 {
-    _interval = interval;
+    if(interval >= MIN_INTERVAL)
+    {
+        _interval = interval;
+    }
 }
 
 uint32_t HC595::GetInterval()
@@ -125,7 +136,6 @@ void HC595::init()
     pinMode(OE_PIN, OUTPUT);
     analogWriteRange(255);
     analogWriteFreq(1000);
-    analogWrite(OE_PIN, LOW);
         
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
@@ -153,7 +163,8 @@ HC595 hc595;
  * "OFF" = Mode::OFF
  * "RTL" = Mode::RTL
  * "LTR" = Mode::LTR
- * "Cascade" = Mode::Cascade */
+ * "Cascade" = Mode::Cascade 
+ * Invalid Strings Will Return Mode::OFF */
 Mode StringtoMode(String str)
 {
     if(str == "ON")

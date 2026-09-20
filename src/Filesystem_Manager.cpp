@@ -192,7 +192,7 @@ namespace Filesystem_Manager
         return Save(path, doc);
     }
 
-    static bool LoadConfigs()
+    static void LoadConfigs()
     {
         JsonDocument doc;
 
@@ -202,6 +202,7 @@ namespace Filesystem_Manager
             AP_SSID = doc["AP_SSID"].as<String>();
             AP_PASSWORD = doc["AP_PASSWORD"].as<String>();
             doc.clear();
+            Serial.println("WiFi Config Loaded Successfully");
         }
         else Serial.println("WiFi Config Did Not Load");
 
@@ -211,10 +212,10 @@ namespace Filesystem_Manager
             hc595.SetMode(StringtoMode(doc["Mode"].as<String>()));
             hc595.SetInterval(doc["Interval"].as<uint32_t>());
             hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
+            doc.clear();
+            Serial.println("74HC595 Driver Config Loaded Successfully");
         }
         else Serial.println("74HC595 Driver Config Did Not Load");
-
-        return true;
     }
 
     void init()
@@ -222,13 +223,10 @@ namespace Filesystem_Manager
         if(!LittleFS.begin())
         {
             Serial.println("Failed to Mount LittleFS");
+            return;
         }
         else Serial.println("LittleFS Mounted Successfuly");
 
-        if(!LoadConfigs())
-        {
-            Serial.println("Failed to Load Configs");
-        }
-        else Serial.println("Configs Loaded Successfuly");
+        LoadConfigs();
     }
 }

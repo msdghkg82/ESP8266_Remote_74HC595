@@ -50,4 +50,5 @@ inline String AP_PASSWORD = "";
 //==== Other Configurations ====
 // StatusLED Default Blinking Interval
 #define DEFAULT_INTERVAL 1000
+#define MIN_INTERVAL 200
 //==== End of Other Configuration ====
