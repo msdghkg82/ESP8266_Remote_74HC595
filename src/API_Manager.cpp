@@ -9,6 +9,9 @@
 
 namespace API_Manager
 {
+    // ---------------------------------------------
+    // WiFi Setting API Handler
+    // ---------------------------------------------
     void handle_WiFiSetting()
     {
         String body = Webserver_Manager::GetServerArg();
@@ -49,7 +52,7 @@ namespace API_Manager
         doc["AP_SSID"] = AP_SSID;
         doc["AP_PASSWORD"] = AP_PASSWORD;
 
-        if(!Filesystem_Manager::SaveJson(WIFI_FILE, doc))
+        if(!Filesystem_Manager::Update(WIFI_FILE, doc))
         {
             Webserver_Manager::SendJsonResponse(500, "ERROR", "Changes Did Not Saved");
             return;
@@ -58,6 +61,9 @@ namespace API_Manager
         Webserver_Manager::SendJsonResponse(200, "SUCCESS", "WiFi Settings Changes After Reset");
     }
 
+    // ---------------------------------------------
+    // 74HC595 Set Mode API Handler
+    // ---------------------------------------------
     void handle_HC595SetMode()
     {
         String body = Webserver_Manager::GetServerArg();
@@ -70,31 +76,75 @@ namespace API_Manager
             return;
         }
 
+        bool updatedMode = false;
+        bool updatedInterval = false;
+
         if(doc["Mode"].is<String>())
         {
-            hc595.SetMode(StringtoMode(doc["Mode"]));
-            Serial.println("Mode Set to: " + doc["Mode"].as<String>());
-            doc.clear();
-            doc["Mode"] = hc595.GetMode();
-            if(Filesystem_Manager::SaveJson(HC595_MODE_FILE, doc))
+            String mode = doc["Mode"].as<String>();
+            if(HasAnimation(StringtoMode(mode)))
+            {
+                if(doc["Interval"].is<uint32_t>())
+                {
+                    Webserver_Manager::SendJsonResponse(400, "ERROR", "Interval is Required for this Mode");
+                    return;
+                }
+            }
+            hc595.SetMode(StringtoMode(mode));
+            Serial.println("Mode Set to: " + mode);
+            if(!Filesystem_Manager::Update(HC595_FILE, "Mode", hc595.GetMode()))
             {
                 Serial.println("New Mode Did Not Saved");
             }
+            updatedMode = true;
         }
 
         if(doc["Interval"].is<uint32_t>())
         {
             hc595.SetInterval(doc["Interval"].as<uint32_t>());
             Serial.println("Interval Set to: " + doc["Interval"].as<String>());
-            doc.clear();
-            doc["Interval"] = hc595.GetInterval();
-            if(!Filesystem_Manager::SaveJson(HC595_INTERVAL_FILE, doc))
+            if(!Filesystem_Manager::Update(HC595_FILE, "Interval", hc595.GetInterval()))
             {
                 Serial.println("New Interval Did Not Saved");
             }
+            updatedInterval = true;
         }
 
+        if(!updatedMode && !updatedInterval)
+        {
+            Webserver_Manager::SendJsonResponse(400, "ERROR", "No Valid Settings Provided");
+            return;
+        }
 
         Webserver_Manager::SendJsonResponse(200, "SUCCESS", "Settings Updated");
+    }
+
+    // ---------------------------------------------
+    // 74HC595 Set Brightness API Handler
+    // ---------------------------------------------
+    void handle_HC595SetBrightness()
+    {
+        String body = Webserver_Manager::GetServerArg();
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, body);
+
+        // Check Invalid Input
+        if(error) {
+            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid JSON");
+            return;
+        }
+
+        if(!doc["Brightness"].is<uint8_t>())
+        {
+            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid Brightness Type");
+            return;
+        }
+
+        hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
+        doc.clear();
+        doc["Brightness"] = hc595.GetBrightness();
+        Filesystem_Manager::Save(HC595_FILE, doc);
+
+        Webserver_Manager::SendJsonResponse(200, "SUCCESS", "Brightness Changed");
     }
 }

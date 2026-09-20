@@ -36,6 +36,7 @@ namespace Webserver_Manager
         });
         server.on(WIFI_SETTING_API, API_Manager::handle_WiFiSetting);
         server.on(HC595_SETMODE_API, API_Manager::handle_HC595SetMode);
+        server.on(HC595_BRIGHTNESS_API, API_Manager::handle_HC595SetBrightness);
     }
 
     void init()

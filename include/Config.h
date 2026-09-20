@@ -7,14 +7,16 @@
 #define RECEIVER_PIN 2
 
 // 74HC595 Pin Definitions
-#define LATCH_PIN 4
+#define LATCH_PIN 5
+#define OE_PIN 4    // For Dimming Outputs
 //==== End of Pin Definitions ====
 
 
 
 //==== API Paths & Methods ====
-#define WIFI_SETTING_API    "/api/wifi", HTTP_PUT
-#define HC595_SETMODE_API    "/api/setmode", HTTP_PUT
+#define WIFI_SETTING_API     "/api/wifi", HTTP_PUT
+#define HC595_SETMODE_API    "/api/driver/setmode", HTTP_PUT
+#define HC595_BRIGHTNESS_API "/api/driver/brightness", HTTP_PUT
 //==== End of API Paths & Methods ====
 
 
@@ -40,8 +42,7 @@ inline String AP_PASSWORD = "";
 #define WIFI_FILE "/wifi.json"
 
 // 74HC595 Config Path
-#define HC595_MODE_FILE "/hc595_mode.json"
-#define HC595_INTERVAL_FILE "/hc595_interval.json"
+#define HC595_FILE "/hc595.json"
 //==== End of Storage Paths ====
 
 

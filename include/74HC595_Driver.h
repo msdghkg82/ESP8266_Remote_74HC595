@@ -16,8 +16,11 @@ class HC595
     Mode GetMode();
     void SetInterval(uint32_t interval);
     uint32_t GetInterval();
+    void SetBrightness(uint8_t brightness);
+    uint8_t GetBrightness();
+    bool HasAnimation();
     void init();
-    void update();
+    void loop();
 
     private:
     void Write(uint8_t data);
@@ -33,9 +36,11 @@ class HC595
     unsigned long _interval;
     uint8_t _buffer;
     uint8_t _index;
+    uint8_t _brightness;
 };
 
 Mode StringtoMode(String str);
+bool HasAnimation(Mode mode);
 
 extern HC595 hc595;
 

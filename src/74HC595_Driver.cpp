@@ -98,7 +98,62 @@ uint32_t HC595::GetInterval()
 {
     return _interval;
 }
+/* OE_PIN is Active Low
+ * brightness: 0 = OFF
+ * brightness: 255 = 100% */
+void HC595::SetBrightness(uint8_t brightness)
+{
+    _brightness = brightness;
+    analogWrite(OE_PIN, 255 - brightness);
+}
 
+uint8_t HC595::GetBrightness()
+{
+    return _brightness;
+}
+
+bool HC595::HasAnimation()
+{
+    if(_mode != Mode::ON && _mode != Mode::OFF) return true;
+    return false;
+}
+
+void HC595::init()
+{
+    pinMode(LATCH_PIN, OUTPUT);
+    digitalWrite(LATCH_PIN, LOW);
+    pinMode(OE_PIN, OUTPUT);
+    analogWriteRange(255);
+    analogWriteFreq(1000);
+    analogWrite(OE_PIN, LOW);
+        
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+    SPI.begin();
+
+    Write(0x00);
+}
+
+void HC595::loop()
+{
+    switch(_mode)
+    {
+        case Mode::ON: return;
+        case Mode::OFF: return;
+        case Mode::RTL: RTL(); break;
+        case Mode::LTR: LTR(); break;
+        case Mode::CASCADE: Cascade(); break;
+    }
+}
+
+HC595 hc595;
+
+/* Strings:
+ * "ON" = Mode::ON
+ * "OFF" = Mode::OFF
+ * "RTL" = Mode::RTL
+ * "LTR" = Mode::LTR
+ * "Cascade" = Mode::Cascade */
 Mode StringtoMode(String str)
 {
     if(str == "ON")
@@ -124,28 +179,8 @@ Mode StringtoMode(String str)
     else return Mode::OFF;
 }
 
-void HC595::init()
+bool HasAnimation(Mode mode)
 {
-    pinMode(LATCH_PIN, OUTPUT);
-    digitalWrite(LATCH_PIN, LOW);
-        
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setDataMode(SPI_MODE0);
-    SPI.begin();
-
-    Write(0x00);
+    if(mode != Mode::ON && mode != Mode::OFF) return true;
+    return false;
 }
-
-void HC595::update()
-{
-    switch(_mode)
-    {
-        case Mode::ON: return;
-        case Mode::OFF: return;
-        case Mode::RTL: RTL(); break;
-        case Mode::LTR: LTR(); break;
-        case Mode::CASCADE: Cascade(); break;
-    }
-}
-
-HC595 hc595;

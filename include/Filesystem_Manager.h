@@ -6,8 +6,12 @@
 
 namespace Filesystem_Manager
 {
-    bool SaveJson(const char * path, const JsonDocument& doc);
-    bool LoadJson(const char * path, JsonDocument& doc);
+    bool Save(const char * path, const JsonDocument& doc);
+    bool Load(const char * path, JsonDocument& doc);
+
+    template <typename T>
+    bool Update(const char * path, const char * key, const T& value);
+    bool Update(const char * path, JsonDocument& updates);
     void init();
 }
 
