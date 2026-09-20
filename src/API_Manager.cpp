@@ -157,15 +157,8 @@ namespace API_Manager
             Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid Brightness Type");
             return;
         }
-
-        int brightness = doc["Brightness"].as<uint8_t>();
-        if(!(brightness >= 0 && brightness <= 255))
-        {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid Brightness Value");
-            return;
-        }
-        hc595.SetBrightness((uint8_t)brightness);
-        Serial.println("Brightness Set to: " + String(brightness));
+        hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
+        Serial.println("Brightness Set to: " + String(hc595.GetBrightness()));
         if(!Filesystem_Manager::Update(HC595_FILE, "Brightness", hc595.GetBrightness()))
         {
             Serial.println("New Brightness Did Not Saved");

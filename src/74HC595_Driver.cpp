@@ -99,10 +99,10 @@ Mode HC595::GetMode()
 
 void HC595::SetInterval(uint32_t interval)
 {
-    if(interval >= MIN_INTERVAL)
-    {
+//    if(interval >= MIN_INTERVAL)
+//    {
         _interval = interval;
-    }
+//    }
 }
 
 uint32_t HC595::GetInterval()
