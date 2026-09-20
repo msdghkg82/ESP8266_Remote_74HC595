@@ -181,21 +181,6 @@ namespace Filesystem_Manager
         return true;
     }
 
-    template <typename T>
-    bool Update(const char * path, const char * key, const T& value)
-    {
-        JsonDocument doc;
-
-        // Load current configuration
-        if (!Load(path, doc)) return false;
-
-        // Change only requested key
-        doc[key] = value;
-
-        // Save updated configuration
-        return Save(path, doc);
-    }
-
     bool Update(const char * path, JsonDocument& updates)
     {
         JsonDocument doc;

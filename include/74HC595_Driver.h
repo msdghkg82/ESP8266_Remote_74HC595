@@ -40,6 +40,7 @@ class HC595
 };
 
 Mode StringtoMode(String str);
+String ModeToString(Mode mode);
 bool HasAnimation(Mode mode);
 
 extern HC595 hc595;

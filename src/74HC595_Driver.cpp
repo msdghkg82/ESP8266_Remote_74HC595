@@ -179,6 +179,37 @@ Mode StringtoMode(String str)
     else return Mode::OFF;
 }
 
+/* Modes:
+ * Mode::ON = "ON"
+ * Mode::OFF = "OFF"
+ * Mode::RTL = "RTL"
+ * Mode::LTR = "LTR"
+ * Mode::Cascade = "Cascade" */
+String ModeToString(Mode mode)
+{
+    if(mode == Mode::ON)
+    {
+        return "ON";
+    }
+    else if(mode == Mode::OFF)
+    {
+        return "OFF";
+    }
+    else if(mode == Mode::RTL)
+    {
+        return "RTL";
+    }
+    else if(mode == Mode::LTR)
+    {
+        return "LTR";
+    }
+    else if(mode == Mode::CASCADE)
+    {
+        return "Cascade";
+    }
+    else return "";
+}
+
 bool HasAnimation(Mode mode)
 {
     if(mode != Mode::ON && mode != Mode::OFF) return true;

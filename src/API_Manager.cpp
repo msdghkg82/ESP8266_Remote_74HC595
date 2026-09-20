@@ -92,7 +92,7 @@ namespace API_Manager
             }
             hc595.SetMode(StringtoMode(mode));
             Serial.println("Mode Set to: " + mode);
-            if(!Filesystem_Manager::Update(HC595_FILE, "Mode", hc595.GetMode()))
+            if(!Filesystem_Manager::Update(HC595_FILE, "Mode", ModeToString(hc595.GetMode())))
             {
                 Serial.println("New Mode Did Not Saved");
             }
