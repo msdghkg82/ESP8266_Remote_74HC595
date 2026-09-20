@@ -2,7 +2,8 @@
 
 #include "Config.h"
 #include <LittleFS.h>
-//#include <ArduinoJson.h>
+#include <ArduinoJson.h>
+#include "74HC595_Driver.h"
 
 namespace Filesystem_Manager
 {
@@ -212,11 +213,21 @@ namespace Filesystem_Manager
 
         // Load WiFi Config
         if(Load(WIFI_FILE, doc))
-        AP_SSID = doc["AP_SSID"].as<String>();
-        AP_PASSWORD = doc["AP_PASSWORD"].as<String>();
-        doc.clear();
+        {
+            AP_SSID = doc["AP_SSID"].as<String>();
+            AP_PASSWORD = doc["AP_PASSWORD"].as<String>();
+            doc.clear();
+        }
+        else Serial.println("WiFi Config Did Not Load");
 
-        // Load ...
+        // Load 74HC595 Driver
+        if(Load(HC595_FILE, doc))
+        {
+            hc595.SetMode(StringtoMode(doc["Mode"].as<String>()));
+            hc595.SetInterval(doc["Interval"].as<uint32_t>());
+            hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
+        }
+        else Serial.println("74HC595 Driver Config Did Not Load");
 
         return true;
     }

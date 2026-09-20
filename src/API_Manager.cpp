@@ -141,9 +141,11 @@ namespace API_Manager
         }
 
         hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
-        doc.clear();
-        doc["Brightness"] = hc595.GetBrightness();
-        Filesystem_Manager::Save(HC595_FILE, doc);
+        Serial.println("Brightness Set to: " + doc["Brightness"].as<String>());
+        if(!Filesystem_Manager::Update(HC595_FILE, "Brightness", hc595.GetBrightness()))
+        {
+            Serial.println("New Brightness Did Not Saved");
+        }
 
         Webserver_Manager::SendJsonResponse(200, "SUCCESS", "Brightness Changed");
     }
