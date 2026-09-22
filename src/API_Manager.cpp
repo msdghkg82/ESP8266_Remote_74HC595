@@ -20,21 +20,21 @@ namespace API_Manager
 
         // Check Invalid Input
         if(error) {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid JSON");
+            Webserver_Manager::SendJsonResponse(400, "Invalid JSON");
             return;
         }
 
         // Check Both AP_SSID & AP_PASSWORD Are Entered And Are String
         if(!doc["AP_SSID"].is<String>() || !doc["AP_PASSWORD"].is<String>())
         {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Both AP_SSID & AP_PASSWORD Must Be Entered And Be String");
+            Webserver_Manager::SendJsonResponse(400, "Both AP_SSID & AP_PASSWORD Must Be Entered And Be String");
             return;
         }
 
         // Check AP_SSID Length
         if(std::strlen(doc["AP_SSID"]) > 32 || std::strlen(doc["AP_SSID"]) == 0)
         {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid AP_SSID Length");
+            Webserver_Manager::SendJsonResponse(400, "Invalid AP_SSID Length");
             return;
         }
 
@@ -42,7 +42,7 @@ namespace API_Manager
         if((std::strlen(doc["AP_PASSWORD"]) > 63 || std::strlen(doc["AP_PASSWORD"]) < 8)
          && std::strlen(doc["AP_PASSWORD"]) != 0)
         {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid AP_PASSWORD Length");
+            Webserver_Manager::SendJsonResponse(400, "Invalid AP_PASSWORD Length");
             return;
         }
 
@@ -54,11 +54,11 @@ namespace API_Manager
 
         if(!Filesystem_Manager::Update(WIFI_FILE, doc))
         {
-            Webserver_Manager::SendJsonResponse(500, "ERROR", "Changes Did Not Saved");
+            Webserver_Manager::SendJsonResponse(500, "Changes Did Not Saved");
             return;
         }
 
-        Webserver_Manager::SendJsonResponse(200, "SUCCESS", "WiFi Settings Changes After Reset");
+        Webserver_Manager::SendJsonResponse(200, "WiFi Settings Changes After Reset");
     }
 
     // ---------------------------------------------
@@ -72,7 +72,7 @@ namespace API_Manager
 
         // Check Invalid Input
         if(error) {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid JSON");
+            Webserver_Manager::SendJsonResponse(400, "Invalid JSON");
             return;
         }
 
@@ -98,7 +98,7 @@ namespace API_Manager
                 // if Mode has Animation
                 if(!doc["Interval"].is<uint32_t>())
                 {
-                    Webserver_Manager::SendJsonResponse(400, "ERROR", "Interval is Required for this Mode");
+                    Webserver_Manager::SendJsonResponse(400, "Interval is Required for this Mode");
                     return;
                 }
                 hc595.SetMode(StringtoMode(mode));
@@ -130,11 +130,11 @@ namespace API_Manager
 
         if(!updatedMode && !updatedInterval)
         {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "No Valid Settings Provided");
+            Webserver_Manager::SendJsonResponse(400, "No Valid Settings Provided");
             return;
         }
 
-        Webserver_Manager::SendJsonResponse(200, "SUCCESS", "Settings Updated");
+        Webserver_Manager::SendJsonResponse(200, "Settings Updated");
     }
 
     // ---------------------------------------------
@@ -148,13 +148,13 @@ namespace API_Manager
 
         // Check Invalid Input
         if(error) {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid JSON");
+            Webserver_Manager::SendJsonResponse(400, "Invalid JSON");
             return;
         }
 
         if(!doc["Brightness"].is<uint8_t>())
         {
-            Webserver_Manager::SendJsonResponse(400, "ERROR", "Invalid Brightness Type");
+            Webserver_Manager::SendJsonResponse(400, "Invalid Brightness Type");
             return;
         }
         hc595.SetBrightness(doc["Brightness"].as<uint8_t>());
@@ -164,6 +164,33 @@ namespace API_Manager
             Serial.println("New Brightness Did Not Saved");
         }
 
-        Webserver_Manager::SendJsonResponse(200, "SUCCESS", "Brightness Changed");
+        Webserver_Manager::SendJsonResponse(200, "Brightness Changed");
+    }
+
+    void handle_RFRemotePair()
+    {
+        String body = Webserver_Manager::GetServerArg();
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, body);
+
+        // Check Invalid Input
+        if(error) {
+            Webserver_Manager::SendJsonResponse(400, "Invalid JSON");
+            return;
+        }
+
+        if(!doc["Code"].is<String>())
+        {
+            Webserver_Manager::SendJsonResponse(400, "Invalid Code Type");
+            return;
+        }
+        RFRemoteCode = doc["Code"].as<uint32_t>();
+        Serial.println("Pair Code Set to: " + doc["Code"].as<String>());
+        if(!Filesystem_Manager::Update(RFREMOTE_FILE, "Code", RFRemoteCode))
+        {
+            Serial.println("New Brightness Did Not Saved");
+        }
+
+        Webserver_Manager::SendJsonResponse(200, "Remote Paired");
     }
 }

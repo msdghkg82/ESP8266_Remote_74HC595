@@ -17,6 +17,7 @@
 #define WIFI_SETTING_API     "/api/wifi", HTTP_PUT
 #define HC595_SETMODE_API    "/api/driver/setmode", HTTP_PUT
 #define HC595_BRIGHTNESS_API "/api/driver/brightness", HTTP_PUT
+#define RF_REMOTE_PAIR_API   "/api/remote/pair", HTTP_PUT
 //==== End of API Paths & Methods ====
 
 
@@ -37,12 +38,21 @@ inline String AP_PASSWORD = "";
 
 
 
+//==== RF Remote Configurations ====
+inline uint32_t RFRemoteCode;
+//==== End of RF Remote Configurations ====
+
+
+
 //==== Storage Paths ====
 // WiFi Config Path
 #define WIFI_FILE "/wifi.json"
 
 // 74HC595 Config Path
 #define HC595_FILE "/hc595.json"
+
+// RF Remote Config Path
+#define RFREMOTE_FILE "/rfremote.json"
 //==== End of Storage Paths ====
 
 

@@ -3,6 +3,7 @@
 
 #pragma once
 #include <ArduinoJson.h>
+#include <LittleFS.h>
 
 namespace Filesystem_Manager
 {
@@ -13,7 +14,10 @@ namespace Filesystem_Manager
     {
         JsonDocument doc;
         // Load current configuration
-        if (!Load(path, doc)) return false;
+        if(LittleFS.exists(path))
+        {
+            if(!Load(path, doc)) return false;
+        }
         // Change only requested key
         doc[key] = value;
         // Save updated configuration

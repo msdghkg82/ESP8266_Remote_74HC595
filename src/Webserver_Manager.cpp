@@ -11,10 +11,20 @@ namespace Webserver_Manager
     static ESP8266WebServer server(80);
     static ESP8266HTTPUpdateServer httpUpdater;
 
-    void SendJsonResponse(int code, const String& stat, const String& msg)
+    void SendJsonResponse(int code, const String& msg)
     {
         JsonDocument doc;
-        doc["status"] = stat;
+        switch(code)
+        {
+            case 200:
+                doc["status"] = "SUCCESS";
+                break;
+            case 400:
+                doc["status"] = "ERROR";
+                break;
+            case 404:
+                doc["status"] = "ERROR";
+        }
         doc["message"] = msg;
         String response;
         serializeJson(doc, response);
@@ -29,10 +39,10 @@ namespace Webserver_Manager
     static void ConnectAPIs()
     {
         server.on("/", []() {
-            SendJsonResponse(200, "OK", "Hello from ESP8266 Webserver.");
+            SendJsonResponse(200, "Hello from ESP8266 Webserver.");
         });
         server.onNotFound([]() {
-            SendJsonResponse(404, "ERROR", "404: Not Found");
+            SendJsonResponse(404, "404: Not Found");
         });
         server.on(WIFI_SETTING_API, API_Manager::handle_WiFiSetting);
         server.on(HC595_SETMODE_API, API_Manager::handle_HC595SetMode);
