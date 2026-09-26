@@ -20,6 +20,9 @@ namespace StatusLED_Manager
         LEDTicker.attach_ms(DEFAULT_INTERVAL, LEDTicker_CallBack);
     }
 
+    /* Set On-board LED Blinking Interval
+     * (Blinking Lasts Forever)
+     * @param interval binking interval in milliseconds */
     void SetInterval(uint32_t interval)
     {
         LEDTicker.detach();
@@ -27,6 +30,10 @@ namespace StatusLED_Manager
         LEDTicker.attach_ms(interval, LEDTicker_CallBack);
     }
 
+    /* Set On-board LED Blinking Interval
+     * (Blinking Lasts Till seconds)
+     * @param interval blinking interval in milliseconds
+     * @param seconds blinking duration in milliseconds */
     void SetInterval(uint32_t interval, uint32_t seconds)
     {
         LEDTicker.detach();

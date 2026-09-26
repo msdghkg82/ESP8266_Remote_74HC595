@@ -11,7 +11,8 @@ enum class Mode
     OFF,
     RTL,
     LTR,
-    CASCADE
+    CASCADE,
+    BLINK
 };
 
 HC595::HC595()
@@ -81,6 +82,29 @@ void HC595::Cascade()
 
 }
 
+void HC595::Blink()
+{
+    _currentMillis = millis();
+    if(_currentMillis - _previousMillis >= _interval)
+    {
+        _previousMillis = _currentMillis;
+        _buffer = 0;
+        static bool isOn = false;
+        if(isOn)
+        {
+            _buffer = 0x00;
+            Write(_buffer);
+            isOn = false;
+        }
+        else
+        {
+            _buffer = 0xFF;
+            Write(_buffer);
+            isOn = true;
+        }
+    }
+}
+
 void HC595::SetMode(Mode mode)
 {
     _mode = mode;
@@ -109,6 +133,7 @@ uint32_t HC595::GetInterval()
 {
     return _interval;
 }
+
 /* OE_PIN is Active Low
  * brightness: 0 = OFF
  * brightness: 255 = 100% */
@@ -153,6 +178,7 @@ void HC595::loop()
         case Mode::RTL: RTL(); break;
         case Mode::LTR: LTR(); break;
         case Mode::CASCADE: Cascade(); break;
+        case Mode::BLINK: Blink(); break;
     }
 }
 
@@ -187,6 +213,10 @@ Mode StringtoMode(String str)
     {
         return Mode::CASCADE;
     }
+    else if(str == "Blink")
+    {
+        return Mode::BLINK;
+    }
     else return Mode::OFF;
 }
 
@@ -217,6 +247,10 @@ String ModeToString(Mode mode)
     else if(mode == Mode::CASCADE)
     {
         return "Cascade";
+    }
+    else if(mode == Mode::BLINK)
+    {
+        return "Blink";
     }
     else return "";
 }

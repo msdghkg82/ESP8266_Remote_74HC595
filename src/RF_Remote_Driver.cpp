@@ -8,6 +8,37 @@ namespace RF_Remote_Driver
 {
     static RCSwitch mySwitch = RCSwitch();
 
+    static bool CheckCode(unsigned long value)
+    {
+        if(RFRemoteCode == (value >> CODE_SHIFT_VALUE))
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    static unsigned long CheckData(unsigned long value)
+    {
+        unsigned long data;
+        data = value & DATA_VALUE_MASK;
+        return data;
+    }
+
+    static void Actions(unsigned long data)
+    {
+        switch(data)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+
     void init()
     {
         mySwitch.enableReceive(digitalPinToInterrupt(RECEIVER_PIN));
@@ -15,10 +46,10 @@ namespace RF_Remote_Driver
 
     void loop()
     {
-        if (mySwitch.available())
+        if(mySwitch.available())
         {
             unsigned long value = mySwitch.getReceivedValue();
-            if (value == 0)
+            if(value == 0)
             {
                 Serial.print("Unknown encoding / Noise");
             }
@@ -33,6 +64,11 @@ namespace RF_Remote_Driver
                 Serial.println(mySwitch.getReceivedProtocol());
                 Serial.print("Delay: ");
                 Serial.println(mySwitch.getReceivedDelay());
+            }
+
+            if(CheckCode(value))
+            {
+                Actions(CheckData(value));
             }
 
             mySwitch.resetAvailable();

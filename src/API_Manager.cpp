@@ -84,7 +84,7 @@ namespace API_Manager
             String mode = doc["Mode"].as<String>();
             if(!HasAnimation(StringtoMode(mode)))
             {
-                // if Mode hasnt Animation (ON or OFF)
+                // if Mode Has Not Animation (Mode is ON or OFF)
                 hc595.SetMode(StringtoMode(mode));
                 Serial.println("Mode Set to: " + mode);
                 if(!Filesystem_Manager::Update(HC595_FILE, "Mode", ModeToString(hc595.GetMode())))

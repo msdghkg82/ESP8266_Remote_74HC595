@@ -40,6 +40,8 @@ inline String AP_PASSWORD = "";
 
 //==== RF Remote Configurations ====
 inline uint32_t RFRemoteCode;
+#define CODE_SHIFT_VALUE 16U
+#define DATA_VALUE_MASK 0xFFFF
 //==== End of RF Remote Configurations ====
 
 
