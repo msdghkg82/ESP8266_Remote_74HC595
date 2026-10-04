@@ -24,6 +24,7 @@ HC595::HC595()
     _buffer = 0;
     _index = 0;
     _brightness = 255;
+    _step = 0;
 }
 
 void HC595::Write(uint8_t data)
@@ -79,7 +80,24 @@ void HC595::LTR()
 
 void HC595::Cascade()
 {
+    _currentMillis = millis();
 
+    if (_currentMillis - _previousMillis >= _interval)
+    {
+        _previousMillis = _currentMillis;
+
+        if (_step <= 8)
+            _buffer = (1 << _step) - 1;
+        else
+            _buffer = 0xFF << (_step - 8);
+
+        Write(_buffer);
+
+        _step++;
+
+        if (_step > 16)
+            _step = 0;
+    }
 }
 
 void HC595::Blink()

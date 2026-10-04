@@ -38,6 +38,7 @@ class HC595
     uint8_t _buffer;
     uint8_t _index;
     uint8_t _brightness;
+    uint8_t _step;
 };
 
 Mode StringtoMode(String str);
