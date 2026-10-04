@@ -12,7 +12,9 @@
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-
+  Serial.println();
+  Serial.println("ON");
+  
   hc595.init();
   Filesystem_Manager::init();
   WiFi_Manager::init();
