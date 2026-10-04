@@ -50,7 +50,7 @@ void HC595::RTL()
     if(_currentMillis - _previousMillis >= _interval)
     {
         _previousMillis = _currentMillis;
-        _buffer |= (1 >> _index);
+        _buffer |= (1 << (7 - _index));
         Write(_buffer);
         _index++;
         if(_index >= 8)
