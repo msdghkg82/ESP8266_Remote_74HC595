@@ -19,7 +19,7 @@ void setup() {
   Filesystem_Manager::init();
   WiFi_Manager::init();
   Webserver_Manager::init();
-  RF_Remote_Driver::init();
+  remote.init();
   StatusLED_Manager::init();
   //hc595.init();
 }
@@ -28,7 +28,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   hc595.loop();
   Webserver_Manager::loop();
-  RF_Remote_Driver::loop();
+  remote.loop();
   //hc595.loop();
 }
 
