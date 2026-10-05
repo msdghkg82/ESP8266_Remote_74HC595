@@ -4,7 +4,7 @@
 struct RemoteButton
 {
     uint16_t Code;
-    uint8_t Action;
+    void (*Action)();
 };
 
 class RF_Remote
@@ -14,7 +14,10 @@ class RF_Remote
     void loop();
 
     private:
-    RemoteButton buttons[4];
+    RemoteButton _buttons[4];
+    void Actions(unsigned long data);
+    unsigned long CheckData(unsigned long value);
+    bool CheckCode(unsigned long value);
 };
 
 extern RF_Remote remote;

@@ -4,14 +4,9 @@
 #include <Arduino.h>
 #include <RCSwitch.h>
 
-struct RemoteButton
-{
-
-};
-
 static RCSwitch mySwitch = RCSwitch();
 
-static bool CheckCode(unsigned long value)
+bool RF_Remote::CheckCode(unsigned long value)
 {
     if(RFRemoteCode == (value >> CODE_SHIFT_VALUE))
     {
@@ -20,31 +15,39 @@ static bool CheckCode(unsigned long value)
     else return false;
 }
 
-static unsigned long CheckData(unsigned long value)
+unsigned long RF_Remote::CheckData(unsigned long value)
 {
     unsigned long data;
     data = value & DATA_VALUE_MASK;
     return data;
 }
 
-static void Actions(unsigned long data)
+void RF_Remote::Actions(unsigned long data)
 {
-    switch(data)
+    if(data == _buttons[0].Code)
     {
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
+        _buttons[0].Action;
+    }
+    else if(data == _buttons[1].Code)
+    {
+        _buttons[1].Action;
+    }
+    else if(data == _buttons[2].Code)
+    {
+        _buttons[2].Action;
+    }
+    else if(data == _buttons[3].Code)
+    {
+        _buttons[3].Action;
     }
 }
 
 RF_Remote::RF_Remote()
 {
-    
+    _buttons[0] = {0x1234, off};
+    _buttons[1] = {0x1235, off};
+    _buttons[2] = {0x1236, off};
+    _buttons[3] = {0x1237, off};
 }
 
 void RF_Remote::init()
@@ -84,3 +87,5 @@ void RF_Remote::loop()
 }
 
 RF_Remote remote;
+
+static void off();
