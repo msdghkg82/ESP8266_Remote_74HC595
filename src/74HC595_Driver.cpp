@@ -12,7 +12,8 @@ enum class Mode
     RTL,
     LTR,
     CASCADE,
-    BLINK
+    BLINK,
+    BREATHING
 };
 
 HC595::HC595()
@@ -122,6 +123,29 @@ void HC595::Blink()
     }
 }
 
+void HC595::Breathing()
+{
+    static uint8_t brightness = 0;
+    static int8_t direction = 1;
+
+    _currentMillis = millis();
+
+    if (_currentMillis - _previousMillis >= _interval)
+    {
+        _previousMillis = _currentMillis;
+
+        brightness += direction;
+
+        if (brightness == 255)
+            direction = -1;
+
+        if (brightness == 0)
+            direction = 1;
+    }
+
+    analogWrite(OE_PIN, 255 - brightness);
+}
+
 void HC595::SetMode(Mode mode)
 {
     _mode = mode;
@@ -130,6 +154,7 @@ void HC595::SetMode(Mode mode)
     _previousMillis = millis();
 
     if(_mode == Mode::OFF) Off();
+    if(_mode == Mode::BREATHING) On();
     else if(_mode == Mode::ON) On();
 }
 
@@ -196,6 +221,7 @@ void HC595::loop()
         case Mode::LTR: LTR(); break;
         case Mode::CASCADE: Cascade(); break;
         case Mode::BLINK: Blink(); break;
+        case Mode::BREATHING: Breathing(); break;
     }
 }
 
@@ -234,6 +260,10 @@ Mode StringtoMode(String str)
     {
         return Mode::BLINK;
     }
+    else if(str== "Breathing")
+    {
+        return Mode::BREATHING;
+    }
     else return Mode::OFF;
 }
 
@@ -268,6 +298,10 @@ String ModeToString(Mode mode)
     else if(mode == Mode::BLINK)
     {
         return "Blink";
+    }
+    else if(mode == Mode::BREATHING)
+    {
+        return "Breathing";
     }
     else return "";
 }

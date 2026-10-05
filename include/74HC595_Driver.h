@@ -30,6 +30,7 @@ class HC595
     void LTR();
     void Cascade();
     void Blink();
+    void Breathing();
 
     Mode _mode;
     unsigned long _previousMillis;
