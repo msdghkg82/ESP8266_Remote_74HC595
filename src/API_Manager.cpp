@@ -76,9 +76,6 @@ namespace API_Manager
             return;
         }
 
-        bool updatedMode = false;
-        bool updatedInterval = false;
-
         if(doc["Mode"].is<String>())
         {
             String mode = doc["Mode"].as<String>();
@@ -91,33 +88,28 @@ namespace API_Manager
                 {
                     Serial.println("New Mode Did Not Saved");
                 }
-                updatedMode = true;
-            }
-            else
-            {
-                // if Mode has Animation
-                if(!doc["Interval"].is<uint32_t>())
-                {
-                    Webserver_Manager::SendJsonResponse(400, "Interval is Required for this Mode");
-                    return;
-                }
-                hc595.SetMode(StringtoMode(mode));
-                Serial.println("Mode Set to: " + mode);
-                hc595.SetInterval(doc["Interval"].as<uint32_t>());
-                Serial.println("Interval Set to: " + doc["Interval"].as<String>());
-                doc.clear();
-                doc["Mode"] = ModeToString(hc595.GetMode());
-                doc["Interval"] = hc595.GetInterval();
-                if(!Filesystem_Manager::Update(HC595_FILE, doc))
-                {
-                    Serial.println("New Mode & Interval Did Not Saved");
-                }
-                updatedMode = true;
-                updatedInterval = true;
             }
         }
 
-        if(doc["Interval"].is<uint32_t>() && updatedInterval == false)
+        Webserver_Manager::SendJsonResponse(200, "Settings Updated");
+    }
+
+    // ---------------------------------------------
+    // 74HC595 Set Brightness API Handler
+    // ---------------------------------------------
+    void handle_HC595SetInterval()
+    {
+        String body = Webserver_Manager::GetServerArg();
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, body);
+
+        // Check Invalid Input
+        if(error) {
+            Webserver_Manager::SendJsonResponse(400, "Invalid JSON");
+            return;
+        }
+
+        if(doc["Interval"].is<uint32_t>())
         {
             hc595.SetInterval(doc["Interval"].as<uint32_t>());
             Serial.println("Interval Set to: " + doc["Interval"].as<String>());
@@ -125,16 +117,8 @@ namespace API_Manager
             {
                 Serial.println("New Interval Did Not Saved");
             }
-            updatedInterval = true;
+            Webserver_Manager::SendJsonResponse(200, "Settings Updated");
         }
-
-        if(!updatedMode && !updatedInterval)
-        {
-            Webserver_Manager::SendJsonResponse(400, "No Valid Settings Provided");
-            return;
-        }
-
-        Webserver_Manager::SendJsonResponse(200, "Settings Updated");
     }
 
     // ---------------------------------------------
